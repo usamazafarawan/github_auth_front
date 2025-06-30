@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from "@angular/router";
 import { sol } from "../../../data.json";
 import { ToastrService } from 'ngx-toastr';
+import { SearchBarComponent } from '../../shared/ui/search-bar/search-bar.component';
 
 
 @Component({
   selector: 'app-sol',
   standalone: true,
-  imports: [CommonModule  ],
+  imports: [CommonModule ,SearchBarComponent ],
   templateUrl: './sol.component.html',
   styleUrls: ['./sol.component.scss']
 })
