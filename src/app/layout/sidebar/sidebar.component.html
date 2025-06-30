@@ -81,7 +81,7 @@
   block: menuStates[item?.Route]
 }"
               >
-                <li *ngFor="let child of item?.child; i of index">
+<li *ngFor="let child of item?.child; let i = index">
                   <a
                     (click)="navigateToChild(child)"
                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
