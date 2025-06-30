@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class MainRequestServiceService {
-
-  constructor(private http: HttpClient) {}
+ baseUrl = 'http://localhost:3000/api/github';
+ constructor(private http: HttpClient) {}
 
   /**
    * Gets data.
@@ -16,7 +16,7 @@ export class MainRequestServiceService {
    * @returns Observable<any>
    */
   getData(url: string, obj?: any): Observable<any> {
-      return this.http.get(url, obj);
+    return this.http.get(url, obj);
   }
 
   /**
@@ -26,7 +26,7 @@ export class MainRequestServiceService {
    * @returns Observable<any>}
    */
   addData(url: string, obj?: any): Observable<any> {
-      return this.http.post(url, obj);
+    return this.http.post(url, obj);
   }
 
   /**
@@ -36,7 +36,7 @@ export class MainRequestServiceService {
    * @returns Observable<any>
    */
   updateData(url: string, obj: any): Observable<any> {
-      return this.http.put(url, obj);
+    return this.http.put(url, obj);
   }
 
   /**
@@ -45,7 +45,7 @@ export class MainRequestServiceService {
    * @returns Observable<any>
    */
   deleteData(url: string): Observable<any> {
-      return this.http.delete(url);
+    return this.http.delete(url);
   }
 
   /**
@@ -55,6 +55,21 @@ export class MainRequestServiceService {
    * @returns Observable<any>
    */
   patchData(url: string, obj: any): Observable<any> {
-      return this.http.patch(url, obj);
+    return this.http.patch(url, obj);
+  }
+  getRepos() {
+    return this.http.get<any[]>(`${this.baseUrl}/data/repos`);
+  }
+
+  getCommits(owner: string, repo: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/data/commits`, {
+      params: { owner, repo },
+    });
+  }
+
+  getIssues(owner: string, repo: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/data/issues`, {
+      params: { owner, repo },
+    });
   }
 }

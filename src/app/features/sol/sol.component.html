@@ -10,7 +10,7 @@
       <div class="flex justify-between items-center">
         <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span
             class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
-        <button (click)="goToDashboard()"
+        <button (click)="connectToGitHub()"
           class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
           Go to dashboard
         </button>
@@ -194,3 +194,14 @@
   </div>
   <!-- 4rt end -->
 </section>
+<ag-grid-angular
+  class="ag-theme-alpine"
+  style="width: 80%; height: 600px"
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  [defaultColDef]="defaultColDef"
+  [pagination]="true"
+  [paginationPageSize]="25"
+  (gridReady)="onGridReady($event)"
+>
+</ag-grid-angular>

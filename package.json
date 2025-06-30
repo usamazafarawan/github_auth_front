@@ -21,6 +21,8 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@tailwindcss/postcss": "^4.0.13",
+    "ag-grid-angular": "^34.0.0",
+    "ag-grid-community": "^34.0.0",
     "angular-mentions": "^1.5.0",
     "chart.js": "^4.4.2",
     "cytoscape": "^3.31.1",
