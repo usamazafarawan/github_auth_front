@@ -3,8 +3,8 @@
   aria-label="Breadcrumb">
   <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
     <li *ngFor="let item of breadCrumb; index as i" class="inline-flex items-center">
-      <a *ngIf="breadCrumb.length > i+1" href="#"
-        class="inline-flex items-center text-sm font-semibold text-[#656F84] text-sm font-semibold hover:text-[#7A499D]">
+      <a *ngIf="breadCrumb.length > i+1" 
+        class="inline-flex items-center cursor-pointer text-sm font-semibold text-[#656F84] text-sm font-semibold hover:text-[#7A499D]">
         <svg *ngIf="i == 0" class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
           fill="currentColor" viewBox="0 0 20 20">
           <path
