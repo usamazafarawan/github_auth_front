@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from "@angular/router";
 import { sol } from "../../../data.json";
-import { SearchBarComponent } from '../../shared/ui/search-bar/search-bar.component';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-sol',
   standalone: true,
-  imports: [CommonModule ,SearchBarComponent],
+  imports: [CommonModule  ],
   templateUrl: './sol.component.html',
   styleUrls: ['./sol.component.scss']
 })
@@ -24,10 +25,11 @@ export class SolComponent {
             "Dashboard",
             "Grid List"
       ];
+
   }
 
   
-   constructor(private router: Router) {}
+   constructor(private router: Router,private toastr: ToastrService) {}
 
   goToDashboard() {
     this.router.navigate(['/dashboard']);

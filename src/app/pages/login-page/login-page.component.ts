@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login-page',
@@ -12,13 +13,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class LoginPageComponent {
 
-  constructor(private router: Router,private route: ActivatedRoute,   private fb: FormBuilder, ) {}
+  constructor(private router: Router,private route: ActivatedRoute,   private fb: FormBuilder,private toastr: ToastrService ) {}
 
 
 
-  onSubmit(){
+  onSubmit() {
     console.log("sdsd")
-this.router.navigate(['/dashboard']);
+
+    this.router.navigate(['/dashboard']);
   }
 
 }
