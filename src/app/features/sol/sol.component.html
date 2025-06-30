@@ -1,197 +1,219 @@
-<app-search-bar [data]="data" [breadCrumb]="breadCrumb" [selectedTab]="selectedTab" (selectedTabs)="selectTab($event)"></app-search-bar>
+<nav
+  class="border border-b-1 border-[#E5E7EB] fonts flex px-5 py-3 text-[#656F84] text-sm font-semibold bg-[#F3F4F6] mb-7"
+  aria-label="Breadcrumb">
+  <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+    <li *ngFor="let item of breadCrumb; index as i" class="inline-flex items-center">
+      <a *ngIf="breadCrumb.length > i+1" href="#"
+        class="inline-flex items-center text-sm font-semibold text-[#656F84] text-sm font-semibold hover:text-[#7A499D]">
+        <svg *ngIf="i == 0" class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor" viewBox="0 0 20 20">
+          <path
+            d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+        </svg>
+        {{item}}
+      </a>
+
+      <div *ngIf="breadCrumb.length <= i+1" class="flex items-center">
+        <span class="ms-1 text-sm font-semibold text-[#0D0D12] md:ms-2">{{item}}</span>
+      </div>
+      <svg *ngIf="breadCrumb.length > i+1" class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400" aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+      </svg>
+    </li>
+  </ol>
+</nav>
 <section class="w-[1255px] h-[765px]   m-5 mx-auto shadow-md rounded-lg p-4 flex flex-col gap-[20px]">
-     <div class="flex justify-between items-center">
-      <div
-
+  <div class="flex justify-between items-center">
+    <div
       class="w-[391px] h-[166px] cursor-pointer border-1 rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 1</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
-         <button
-         (click)="goToDashboard()"
-         class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white"
-          >
-          Go to dashboard 
-          </button>
-        </div>
+      <p class="text-[18px] font-bold leading-[150%]">Solution 1</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span
+            class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
+        <button (click)="goToDashboard()"
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
+          Go to dashboard
+        </button>
       </div>
-      <!-- mini1 end -->
-      <div
+    </div>
+    <!-- mini1 end -->
+    <div
       class="w-[391px] h-[166px] cursor-pointer border-1 rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 2</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
-         <button
-         (click)="goToDashboard()"
-            class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white"
-          >
-          Go to dashboard 
-          </button>
-        </div>
+      <p class="text-[18px] font-bold leading-[150%]">Solution 2</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span
+            class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
+        <button (click)="goToDashboard()"
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
+          Go to dashboard
+        </button>
       </div>
-      <!-- mini2 end -->
-      <div
+    </div>
+    <!-- mini2 end -->
+    <div
       class="w-[391px] h-[166px] border-1 cursor-pointer rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 3</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
-         <button
-         (click)="goToDashboard()"
-
-            class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white"
-          >
-          Go to dashboard 
-          </button>
-        </div>
+      <p class="text-[18px] font-bold leading-[150%]">Solution 3</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span
+            class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
+        <button (click)="goToDashboard()"
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
+          Go to dashboard
+        </button>
       </div>
-      <!-- mini3 end -->
-     </div>
-     <!-- 1st end -->
-     <div class="flex justify-between items-center">
-      <div         
+    </div>
+    <!-- mini3 end -->
+  </div>
+  <!-- 1st end -->
+  <div class="flex justify-between items-center">
+    <div
       class="w-[391px] h-[166px] cursor-pointer border-1 rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 4</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
-         <button
-            class="w-[143px] h-[37px] flex items-center justify-center bg-[#9CA3AF] rounded-md text-white gap-2 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white cursor-pointer mt-1"
-          >
+      <p class="text-[18px] font-bold leading-[150%]">Solution 4</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span
+            class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
+        <button
+          class="w-[143px] h-[37px] flex items-center justify-center bg-[#9CA3AF] rounded-md text-white gap-2 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white cursor-pointer mt-1">
           Request Access
-         </button>
-        </div>
+        </button>
       </div>
-      <!-- mini1 end -->
-      <div
+    </div>
+    <!-- mini1 end -->
+    <div
       class="w-[391px] h-[166px] border-1 cursor-pointer rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 5</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
-         <button
-            class="w-[143px] h-[37px] flex items-center justify-center bg-[#9CA3AF] rounded-md text-white gap-2 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white cursor-pointer mt-1"
-          >
+      <p class="text-[18px] font-bold leading-[150%]">Solution 5</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span
+            class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
+        <button
+          class="w-[143px] h-[37px] flex items-center justify-center bg-[#9CA3AF] rounded-md text-white gap-2 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white cursor-pointer mt-1">
           Request Access
-          </button>
-        </div>
+        </button>
       </div>
-      <!-- mini2 end -->
-      <div
+    </div>
+    <!-- mini2 end -->
+    <div
       class="w-[391px] h-[166px] cursor-pointer border-1 rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 6</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
-         <button
-         (click)="goToDashboard()"
-            class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white"
-          >
-          Go to dashboard 
-          </button>
-        </div>
+      <p class="text-[18px] font-bold leading-[150%]">Solution 6</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span
+            class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
+        <button (click)="goToDashboard()"
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
+          Go to dashboard
+        </button>
       </div>
-      <!-- mini3 end -->
-     </div>
-     <!-- 2nd end -->
-     <div class="flex justify-between items-center">
-      <div
+    </div>
+    <!-- mini3 end -->
+  </div>
+  <!-- 2nd end -->
+  <div class="flex justify-between items-center">
+    <div
       class="w-[391px] h-[166px] border-1 cursor-pointer rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 7</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
-         <button
-            class="w-[143px] h-[37px] flex items-center justify-center bg-[#9CA3AF] rounded-md text-white gap-2 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white cursor-pointer mt-1"
-          >
+      <p class="text-[18px] font-bold leading-[150%]">Solution 7</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span
+            class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
+        <button
+          class="w-[143px] h-[37px] flex items-center justify-center bg-[#9CA3AF] rounded-md text-white gap-2 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white cursor-pointer mt-1">
           Request Access
-          </button>
-        </div>
+        </button>
       </div>
-      <!-- mini1 end -->
-      <div
+    </div>
+    <!-- mini1 end -->
+    <div
       class="w-[391px] h-[166px] border-1 cursor-pointer rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 8</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
-         <button
-         (click)="goToDashboard()"
-            class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white"
-          >
-          Go to dashboard 
-          </button>
-        </div>
+      <p class="text-[18px] font-bold leading-[150%]">Solution 8</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span
+            class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
+        <button (click)="goToDashboard()"
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
+          Go to dashboard
+        </button>
       </div>
-      <!-- mini2 end -->
-      <div 
+    </div>
+    <!-- mini2 end -->
+    <div
       class="w-[391px] h-[166px] border-1 cursor-pointer rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 9</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
-         <button
-            class="w-[143px] h-[37px] flex items-center justify-center rounded-md bg-[#9CA3AF] text-white gap-2 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white cursor-pointer mt-1"
-          >
+      <p class="text-[18px] font-bold leading-[150%]">Solution 9</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/x-circle.svg" alt=""><span
+            class="text-gray-500 font-semibold text-[14px]">Non Accessible</span></p>
+        <button
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md bg-[#9CA3AF] text-white gap-2 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white cursor-pointer mt-1">
           Request Access
-          </button>
-        </div>
+        </button>
       </div>
-      <!-- mini3 end -->
-     </div>
-     <!-- 3rd end -->
-     <div class="flex justify-between items-center">
-      <div 
+    </div>
+    <!-- mini3 end -->
+  </div>
+  <!-- 3rd end -->
+  <div class="flex justify-between items-center">
+    <div
       class="w-[391px] h-[166px] border-1 cursor-pointer rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 10</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
-         <button
-         (click)="goToDashboard()"
-            class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white"
-          >
-          Go to dashboard 
-          </button>
-        </div>
+      <p class="text-[18px] font-bold leading-[150%]">Solution 10</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span
+            class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
+        <button (click)="goToDashboard()"
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
+          Go to dashboard
+        </button>
       </div>
-      <!-- mini1 end -->
-      <div
+    </div>
+    <!-- mini1 end -->
+    <div
       class="w-[391px] h-[166px] border-1 cursor-pointer rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 11</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
-         <button
-         (click)="goToDashboard()"
-            class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white"
-          >
-          Go to dashboard 
-          </button>
-        </div>
+      <p class="text-[18px] font-bold leading-[150%]">Solution 11</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span
+            class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
+        <button (click)="goToDashboard()"
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
+          Go to dashboard
+        </button>
       </div>
-      <!-- mini2 end -->
-      <div
+    </div>
+    <!-- mini2 end -->
+    <div
       class="w-[391px] h-[166px] border-1 cursor-pointer rounded-md border-gray-200 p-4 flex flex-col justify-between">
-        <p class="text-[18px] font-bold leading-[150%]">Solution 12</p>
-        <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.</p>
-        <div class="flex justify-between items-center">
-         <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
-         <button
-         (click)="goToDashboard()"
-            class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white"
-          >
-          Go to dashboard 
-          </button>
-        </div>
+      <p class="text-[18px] font-bold leading-[150%]">Solution 12</p>
+      <p class="font-normal text-[14px] leading-[150%]">Horizontal opacity union layer resizing variant shadow overflow.
+      </p>
+      <div class="flex justify-between items-center">
+        <p class="flex gap-1"><img src="assets/icons/check-circle.svg" alt=""><span
+            class="text-green-500 font-semibold text-[14px]">Accessible</span></p>
+        <button (click)="goToDashboard()"
+          class="w-[143px] h-[37px] flex items-center justify-center rounded-md text-white gap-2 bg-[#9CA3AF] cursor-pointer mt-1 hover:bg-gradient-to-r from-[#9061F9] to-[#F17EB8] hover:text-white">
+          Go to dashboard
+        </button>
       </div>
-      <!-- mini3 end -->
-     </div> 
-     <!-- 4rt end -->
- </section> 
-
- 
-
- 
+    </div>
+    <!-- mini3 end -->
+  </div>
+  <!-- 4rt end -->
+</section>

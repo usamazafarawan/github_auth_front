@@ -45,18 +45,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
             "child": [
                 {
                      "Title": "Remove Integration",
-            "Icon": "./assets/icons/dashboardIcons.svg#analyze",
-            "Icon2": "./assets/icons/sidenavIcons.svg#analyze"
+            "Icon": "user-xmark",
                 },
                 {
                     "Title": "Re-sync Integration",
-            "Icon": "./assets/icons/dashboardIcons.svg#action",
-            "Icon2": "./assets/icons/sidenavIcons.svg#action"
+            "Icon": "rotate",
                 } ,
                    {
                     "Title": "Log Out",
-            "Icon": "./assets/icons/dashboardIcons.svg#action",
-            "Icon2": "./assets/icons/sidenavIcons.svg#action"
+            "Icon": "right-from-bracket",
                 } 
             ]
         }];
