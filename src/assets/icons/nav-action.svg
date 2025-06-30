@@ -1,0 +1,16 @@
+  <svg
+    id="action"
+    width="16"
+    height="17"
+    viewBox="0 0 16 17"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M8.83398 1V6.83333H14.6673L7.16732 16V10.1667H1.33398L8.83398 1Z"
+      stroke="#FFFFFF"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>

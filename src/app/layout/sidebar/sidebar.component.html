@@ -1,0 +1,139 @@
+<!-- <button mat-icon-button (click)="onSidebarToggle()">
+  <mat-icon>menu</mat-icon>
+</button> -->
+
+<div class="flex flex-grow">
+  <mat-sidenav-container
+    class="example-sidenav-container !w-full !bg-white"
+    [style.marginTop.px]="mobileQuery.matches ? 0 : 0"
+  >
+    <mat-sidenav
+      class="!overflow-hidden !bg-white sidenav"
+      [ngClass]="{ 'sidebar-collapsed': isSidebarCollapsed }"
+      [class.collapsed]="isSidebarCollapsed"
+      style="border-radius: 0px !important"
+      #snav
+      opened
+      [mode]="'side'"
+    >
+      <aside
+        *ngIf="!isSidebarCollapsed"
+        id="sidebar-multi-level-sidebar"
+        class="relative left-0 z-0 w-full h-screen-full transition-transform -translate-x-full sm:translate-x-0"
+        aria-label="Sidebar"
+      >
+        <div
+          class="h-full xl:p-[20px] max-xl:p-[10px] overflow-y-auto bg-white border border-l-1 border-[#E5E7EB] rounded-br-4xl"
+        >
+          <!-- Sidebar content here -->
+
+          <ul class="space-y-2 font-medium text-sm cursor-pointer">
+            <li class="pt-4">
+              <a
+                (click)="onSidebarToggle()"
+                class="flex items-center p-2 text-white rounded-lg bg-[#EF518C] group sidebar-item"
+              >
+                <div class="flex flex-col gap-[6px]"></div>
+                <img
+                  src="../../../assets/icons/hamburg.svg"
+                  alt=""
+                />
+                <span class="ms-3 sidebar-item-text">Home</span>
+              </a>
+            </li>
+            <li *ngFor="let item of childNavs">
+              <button
+                type="button"
+                class="sidebar-item sidebar-subitem flex items-center w-full pr-[10px] pl-[15px] py-[12px] bg-[#F3F4F6] text-sm text-gray-900 font-semibold transition duration-75 hover:bg-gray-200 rounded-lg group "
+                (click)="toggleMenu(item.Route)"
+                [attr.aria-controls]="item?.Route"
+                [attr.data-collapse-toggle]="item?.Route"
+              >
+              <div class="w-[5px] h-[24px] rounded-xl bg-purple-700 mr-2"></div>
+                <span
+                  class="flex-1 text-left rtl:text-right whitespace-nowrap sidebar-item-text"
+                  > 
+                     {{ item?.Title }}
+                  </span>
+              
+                <svg
+                  class="w-3 h-3 transform transition-transform duration-100"
+    [ngClass]="{ 'rotate-180': menuStates[item?.Route] }"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+              <ul
+                [attr.id]="item?.Route"
+                class=" py-2 space-y-2 bg-[#F9FAFB] mt-2 rounded-lg"
+                [ngClass]="{
+  hidden: !menuStates[item?.Route],
+  block: menuStates[item?.Route]
+}"
+              >
+                <li *ngFor="let child of item?.child">
+                  <a
+                    (click)="navigateToChild(child.Route, item.Route, child.Route, child.Title)"
+                    class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
+                  >
+                    <svg
+                      class="items-center"
+                      style="max-width: 20px; max-height: 20px"
+                    >
+                      <use class="icons" [attr.xlink:href]="child.Icon"></use>
+                    </svg>
+                    <span class="ms-3">{{ child.Title }}</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          
+        </div>
+      </aside>
+      
+      <!-- This part is collapsed by default for "phase" section -->
+      <aside
+        *ngIf="isSidebarCollapsed"
+        id="sidebar-multi-level-sidebar"
+        class="relative left-0 z-0 w-[39%] justify-self-start h-screen-full transition-transform -translate-x-full sm:translate-x-0"
+        aria-label="Sidebar"
+      >
+          <div
+            class="flex flex-col justify-center w-[70px] bg-[#F3F4F6] rounded-sm my-[30px]"
+          >
+            <div
+              class="w-full bg-[#EF518C] h-full rounded-t-sm justify-items-center content-center cursor-pointer"
+              (click)="onSidebarToggle()"
+            >
+              <img
+                class="py-[25px]"
+                src="../../../assets/icons/hamburg.svg"
+                alt=""
+              />
+            </div>
+         
+          </div>
+      </aside>
+    </mat-sidenav>
+    <mat-sidenav-content [class.expanded-content]="!isSidebarCollapsed" [class.collapsed-content]="isSidebarCollapsed">
+      <main class="flex-1 flex flex-row">
+        <div class="w-[93.7%]">
+          <router-outlet />
+          <div class="w-full flex justify-center items-center mb-10">
+            </div>
+        </div>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

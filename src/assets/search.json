@@ -1,0 +1,6 @@
+{
+  "searchHistory": [
+    "MATCH (p:Person)-[:WORKS_FOR]->(c:Company) WHERE c.industry = 'Technology' RETURN p, c",
+    "MATCH (g:Goal)-[:CONTAINS]->(o:Objective) RETURN g, o LIMIT 5"
+  ]
+} 

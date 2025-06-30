@@ -1,0 +1,22 @@
+::ng-deep .mat-mdc-dialog-surface{
+    background-color: #ffffff !important;
+    --mat-sys-corner-extra-large: 9px !important; 
+  }
+
+  ::ng-deep .custom-scrollbar {
+    scrollbar-width: inherit;
+    scrollbar-color: #7A499D transparent;
+  }
+  
+  ::ng-deep .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::ng-deep .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #7A499D;
+    border-radius: 4px;
+  }
+  
+  ::ng-deep .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }

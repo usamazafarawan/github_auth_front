@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Notepad body - made slightly larger and more centered -->
+  <rect x="4" y="2" width="12" height="18" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+  
+  <!-- Lines on the notepad - more evenly spaced -->
+  <line x1="6" y1="6" x2="14" y2="6" stroke="currentColor" stroke-width="1.2"/>
+  <line x1="6" y1="9" x2="14" y2="9" stroke="currentColor" stroke-width="1.2"/>
+  <line x1="6" y1="12" x2="14" y2="12" stroke="currentColor" stroke-width="1.2"/>
+  <line x1="6" y1="15" x2="11" y2="15" stroke="currentColor" stroke-width="1.2"/>
+
+  <!-- Improved pencil design -->
+  <g transform="translate(14, 12) rotate(45)">
+    <!-- Pencil body -->
+    <rect x="0" y="0" width="8" height="2.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <!-- Pencil tip -->
+    <path d="M8 1.25L10 0L10 2.5L8 1.25Z" fill="currentColor"/>
+    <!-- Eraser end -->
+    <rect x="-2" y="0" width="2" height="2.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  </g>
+</svg>

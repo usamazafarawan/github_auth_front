@@ -1,0 +1,872 @@
+<div *ngIf="showSelectionScreen" class="w-full mx-auto p-6 bg-white rounded-lg shadow-md">
+    <button class="w-[100%] flex justify-end cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg" alt=""></button>
+    <h1 class="text-3xl font-bold text-gray-800 mb-2 justify-self-center">Add Data</h1>
+    <p class="text-gray-600 mb-8 justify-self-center">Choose how you'd like to add data to your project</p>
+  
+    <div class="space-y-6">
+      <button class="border border-[#D1D5DB] rounded-lg p-5 hover:border-[#d4dae0] transition-colors duration-200 bg-[#F9FAFB]" (click)="handleSelection('add')">
+        <div class="flex items-start flex-col">
+          <div class="bg-gradient-to-r from-[#9061F9] to-[#F17EB8] p-3 rounded-lg mr-4 mb-2">
+            <img src="../../../../assets/icons/folder-open.svg" alt="">
+          </div>
+          <div class="flex items-start flex-col">
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">Import Existing Data</h2>
+            <p class="text-gray-600 mb-3">Connect to existing data source, upload files or import from external services.</p>
+            <p class="text-sm text-gray-500 italic">Examples: CSV files, database, APIs, Cloud storage</p>
+          </div>
+        </div>
+      </button>
+  
+      <button class="bg-[#FDF0F6] border border-[#EF518C] rounded-lg p-5 hover:border-blue-500 transition-colors duration-200 flex-col" (click)="handleSelection('create')">
+        <div class="flex items-start flex-col">
+            <div class="bg-gradient-to-r from-[#9061F9] to-[#F17EB8] p-3 rounded-lg mr-4 mb-2">
+                <img src="../../../../assets/icons/plus-circle-white.svg" alt="">
+              </div>
+          <div class="flex items-start flex-col">
+            <h2 class="text-lg font-semibold text-gray-800 mb-2">Create New Data</h2>
+            <p class="text-gray-600 mb-3">Start fresh by creating new datasets, tables, or data structures from scratch.</p>
+            <p class="text-sm text-gray-500 italic">Examples: empty tables, data entry forms, templates</p>
+          </div>
+        </div>
+      </button>
+    </div>
+</div>
+
+
+
+<!--old implementation static data for all screens-->
+<div *ngIf="(!showSelectionScreen && (viewType!==discoverPageType.Card && viewType!==discoverPageType.Board && viewType!== discoverPageType.Table && viewType!== discoverPageType.Graph && viewType!== discoverPageType.Excel && viewType!== discoverPageType.Timeline && viewType!==discoverPageType.Organization))"  class="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+
+<div class="bg-[#F3F4F6]">
+    <div class="px-6 py-4 flex justify-between">
+      <h1 class="text-lg font-semibold text-gray-800">Add node to view</h1>
+      <button class="cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg" alt=""></button>
+    </div>
+  
+    <div class="px-6 mb-1">
+      <div class="flex space-x-4 text-sm font-medium text-gray-700">
+        <button 
+        (click)="switchToCreateTab()"
+        [ngClass]="{
+          'bg-[#7A499D] text-white': activeTab === 'create',
+          'bg-transparent text-gray-700': activeTab !== 'create'
+        }"
+        class="p-2 px-4 focus:outline-none rounded transition-colors"
+      >
+        Create New
+      </button>
+        <button 
+          (click)="switchToAddTab()"
+          [ngClass]="{
+            'bg-[#7A499D] text-white': activeTab === 'add',
+            'bg-transparent text-gray-700': activeTab !== 'add'
+          }"
+          class="p-2 px-4 focus:outline-none rounded transition-colors"
+        >
+          Add Existing
+        </button>
+      </div>
+    </div>
+</div>
+  
+    <div class="px-6 py-4">
+      <h3 class="text-sm font-bold text-gray-700 mb-3">
+        {{ activeTab === 'create' ? 'Select Concept Type' : 'Find Existing Concept' }}
+      </h3>
+      
+      <!-- Search  -->
+      <div class="mb-4">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery"
+          (input)="filterConceptTypes()"
+          [placeholder]="activeTab === 'create' ? 'Search concept types (e.g: goal, process team...)' : 'Search existing concepts...'"
+          class="w-full px-3 py-2 border-2 border-[#EF518C] rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0"
+        >
+      </div>
+  
+      <div class="border border-[#E5E7EB] rounded-md w-[98%] shadow-md bg-[#F9FAFB]">
+        <!-- Scrollable inner container -->
+        <div
+          class="max-h-70 overflow-y-auto pr-4 -mr-6 custom-scrollbar"
+        >
+          <div
+            *ngFor="let concept of filteredConceptTypes"
+            (click)="selectConceptType(concept)"
+            [class.bg-blue-50]="selectedConceptType === concept.type"
+            class="p-3 rounded-md hover:bg-gray-50 cursor-pointer"
+          >
+            <div class="font-bold text-gray-800">{{ concept.type }}</div>
+            <div class="text-xs text-gray-500 mt-1">{{ concept.description }}</div>
+          </div>
+      
+          <div *ngIf="filteredConceptTypes.length === 0" class="text-center text-gray-500 py-4">
+            No results found
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="flex justify-between p-5">
+      <p class="text-sm font-bold text-[#656F84] mb-4">
+        {{ activeTab === 'create' ? 'Select a concept type to continue' : 'Select a concept data to continue' }}
+      </p>
+      
+      <div class="flex justify-end space-x-3">
+        <button 
+          (click)="onCancel()"
+          class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
+        >
+          Cancel
+        </button>
+        <button 
+          (click)="activeTab === 'create' ? onCreateData() : onAddData()"
+          [disabled]="!selectedConceptType"
+          [class.bg-blue-300]="!selectedConceptType"
+          [class.bg-blue-600]="selectedConceptType"
+          [class.hover:bg-blue-700]="selectedConceptType"
+          class="flex px-3 py-1 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 items-center whitespace-nowrap bg-gradient-to-r from-[#9061F9] to-[#F17EB8] cursor-pointer"
+        >
+          {{ activeTab === 'create' ? 'Create Data' : 'Add Data' }} <img src="assets/icons/plus.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--Discover Card Type Section -->
+  <div *ngIf="!showSelectionScreen && viewType === discoverPageType.Card"
+    class="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-[#F3F4F6]">
+      <div class="px-6 py-4 flex justify-between">
+        <h1 class="text-lg font-semibold text-gray-800">Add node to view</h1>
+        <button class="cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg"
+            alt=""></button>
+      </div>
+    </div>
+  
+    <div class="px-6 py-4">
+      <h3 class="text-sm font-bold text-gray-700 mb-3">
+        Select Goal Concept
+      </h3>
+  
+      <!-- Search  -->
+      <div class="mb-4">
+        <input type="text" [(ngModel)]="searchQuery" (input)="filterConceptTypes()"
+          [placeholder]="activeTab === 'create' ? 'Search concept types (e.g: goal, process team...)' : 'Search existing concepts...'"
+          class="w-full px-3 py-2 border-2 border-[#EF518C] rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+      </div>
+  
+      <div class="border border-[#E5E7EB] rounded-md w-[98%] shadow-md bg-[#F9FAFB]">
+        <!-- Scrollable inner container -->
+        <div class="max-h-70 overflow-y-auto pr-4 -mr-6 custom-scrollbar">
+          <div *ngFor="let concept of filteredConceptTypes" (click)="selectConceptType(concept)"
+            [class.bg-blue-50]="selectedConceptType === concept.type"
+            class="p-3 rounded-md hover:bg-gray-50 cursor-pointer">
+            <div class="font-bold text-gray-800">{{ concept.type }}</div>
+            <div class="text-xs text-gray-500 mt-1">{{ concept.description }}</div>
+          </div>
+  
+          <div *ngIf="filteredConceptTypes.length === 0" class="text-center text-gray-500 py-4">
+            No results found
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="flex justify-between p-5">
+      <p class="text-sm font-bold text-[#656F84] mb-4">
+        {{ activeTab === 'create' ? 'Select a concept type to continue' : 'Select a concept data to continue' }}
+      </p>
+  
+      <div class="flex justify-end space-x-3">
+        <button (click)="onCancel()"
+          class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+          Cancel
+        </button>
+        <button (click)="activeTab === 'create' ? onCreateData() : onAddData()" [disabled]="!selectedConceptType"
+          [class.bg-blue-300]="!selectedConceptType" [class.bg-blue-600]="selectedConceptType"
+          [class.hover:bg-blue-700]="selectedConceptType"
+          class="flex px-3 py-1 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 items-center whitespace-nowrap bg-gradient-to-r from-[#9061F9] to-[#F17EB8] cursor-pointer">
+          {{ activeTab === 'create' ? 'Create Data' : 'Add Data' }} <img src="assets/icons/plus.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!--Discover Table Type Section -->
+  <div *ngIf="!showSelectionScreen && viewType === discoverPageType.Table"
+    class="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+  
+    <div class="bg-[#F3F4F6]">
+      <div class="px-6 py-4 flex justify-between">
+        <h1 class="text-lg font-semibold text-gray-800">Add record to table</h1>
+        <button class="cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg"
+            alt=""></button>
+      </div>
+    </div>
+  
+    <div *ngIf="!tableSelectedTab">
+  
+  
+      <div class="px-6 py-4">
+        <h3 class="text-sm font-bold text-gray-700 mb-3">
+          Select Table Tab
+        </h3>
+  
+        <!-- Search  -->
+        <div class="mb-4">
+          <input type="text" [(ngModel)]="searchQuery" (input)="filterConceptTypes()"
+            [placeholder]="activeTab === 'create' ? 'Search concept types (e.g: goal, process team...)' : 'Search existing concepts...'"
+            class="w-full px-3 py-2 border-2 border-[#EF518C] rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+        </div>
+  
+        <div class="border border-[#E5E7EB] rounded-md w-[98%] shadow-md bg-[#F9FAFB]">
+          <!-- Scrollable inner container -->
+          <div class="max-h-70 overflow-y-auto pr-4 -mr-6 custom-scrollbar">
+            <div *ngFor="let concept of filteredConceptTypes" (click)="selectTableTabType(concept)"
+              [class.bg-blue-50]="selectedConceptType === concept.type"
+              class="p-3 rounded-md hover:bg-gray-50 cursor-pointer">
+              <div class="font-bold text-gray-800">{{ concept.type }}</div>
+              <div class="text-xs text-gray-500 mt-1">{{ concept.description }}</div>
+            </div>
+  
+            <div *ngIf="filteredConceptTypes.length === 0" class="text-center text-gray-500 py-4">
+              No results found
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+  
+    <div *ngIf="tableSelectedTab">
+  
+      <div class="px-6 py-4">
+  
+        <!-- Task Name  -->
+        <h3 class="text-sm font-bold text-gray-700 mb-3">
+          Task Name
+        </h3>
+  
+        <div class="mb-4">
+          <input type="text" placeholder=" Task Name" [(ngModel)]="taskName"
+            class="w-full px-3 py-2 border-2 border-gray-300  rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+        </div>
+  
+        <!-- Priority Dropdown -->
+        <div class="relative  w-[100%]">
+          <label class="block mb-2 text-sm font-semibold text-[#656F84]">Priority:</label>
+          <div class="bg-white border border-gray-300 p-2.5 rounded-lg flex items-center justify-between cursor-pointer"
+            (click)="toggleDropdownPriority()">
+            <div class="flex items-center gap-2">
+              <img [src]="selectedPriority.icon" class="w-5 h-5 rounded-full" alt="icon">
+              <span>{{ selectedPriority.name }}</span>
+            </div>
+            <img src="../../../../assets/icons/low.svg" class="w-5 h-5" alt="icon">
+          </div>
+  
+          <div *ngIf="dropdownPriority"
+            class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow">
+            <div *ngFor="let priority of priorities"
+              class="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
+              (click)="selectPriority(priority)">
+              <div class="flex items-center gap-2">
+                <img [src]="priority.icon" class="w-5 h-5 rounded-full" alt="icon">
+                <span>{{ priority.name }}</span>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+  
+        <!-- Status Name  -->
+        <div class="relative  w-[100%]">
+          <label class="block mb-2 text-sm font-semibold text-[#656F84]">Status:</label>
+          <div class="bg-white border border-gray-300 p-2.5 rounded-lg flex items-center justify-between cursor-pointer"
+            (click)="toggleDropdownStatus()">
+            <div class="flex items-center gap-2 px-2 py-1 rounded text-white"
+              [ngStyle]="{ 'background-color': selectedStatus.color.toLowerCase(), 'color': 'black', 'height':'24px'}">
+              {{ selectedStatus.name }}
+            </div>
+            <img src="../../../../assets/icons/low.svg" class="w-5 h-5" alt="icon">
+          </div>
+  
+          <div *ngIf="dropdownStatus"
+            class="absolute z-10 mt-1 w-full bg-white border  border-gray-300 rounded-lg shadow">
+            <div *ngFor="let status of statuses"
+              class="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
+              (click)="selectStatus(status)">
+              <span>{{ status.name }}</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Owner Dropdown -->
+        <div class="relative mx-auto mt-3">
+          <label for="countries" class="block mb-2 text-sm font-semibold text-[#656F84]">Owner:</label>
+          <div
+            class="bg-[#FFFFFF] border border-[#E5E7EB] block p-2.5 w-full text-sm rounded-lg focus:outline-none focus:ring-0 focus:border-[#E5E7EB]"
+            (click)="toggleDropdownOwner()">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <img *ngIf="selectedOwners" [src]="selectedOwners.icon" class="w-5 h-5 rounded-full" alt="icon">
+                <span>{{ selectedOwners?.name || 'Owner' }}</span>
+              </div>
+              <img src="../../../../assets/icons/low.svg" class="w-5 h-5" alt="icon">
+            </div>
+          </div>
+          <div *ngIf="dropdownOwner" class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow">
+            <div *ngFor="let owner of owners"
+              class="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer" (click)="selectOwner(owner)">
+  
+              <div class="flex items-center gap-2">
+                <img [src]="owner.icon" class="w-5 h-5 rounded-full" alt="icon">
+                <span>{{ owner.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+        <div class="relative  w-[100%]">
+          <label for="dueDate" class="block mb-2 text-sm font-semibold text-[#656F84]">Due Date:</label>
+          <div class="relative w-full">
+            <input matInput [matDatepicker]="startPicker" [(ngModel)]="dueDate" id="dueDate" placeholder="Select date"
+              class="pe-10 bg-[#FFFFFF] border border-[#E5E7EB] block p-2.5 w-full text-sm rounded-lg focus:outline-none focus:ring-0 focus:border-[#E5E7EB]">
+            <button type="button" (click)="startPicker.open()"
+              class="absolute inset-y-0 right-3 flex items-center cursor-pointer">
+              <img src="../../../../assets/icons/date.svg" class="w-4 h-4" alt="Calendar">
+            </button>
+  
+            <mat-datepicker #startPicker></mat-datepicker>
+          </div>
+        </div>
+  
+  
+      </div>
+    </div>
+  
+    <div class="flex justify-between p-5">
+      <p class="text-sm font-bold text-[#656F84] mb-4">
+        {{ activeTab === 'create' ? 'Select a concept type to continue' : 'Select a concept data to continue' }}
+      </p>
+  
+      <div class="flex justify-end space-x-3">
+        <button (click)="onCancel()"
+          class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+          Cancel
+        </button>
+        <button (click)="onAddData()" [class.bg-blue-300]="!selectedConceptType" [class.bg-blue-600]="selectedConceptType"
+          [class.hover:bg-blue-700]="selectedConceptType"
+          class="flex px-3 py-1 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 items-center whitespace-nowrap bg-gradient-to-r from-[#9061F9] to-[#F17EB8] cursor-pointer">
+          {{ activeTab === 'create' ? 'Create Data' : 'Add Data' }} <img src="assets/icons/plus.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!--Discover Graph Type Section -->
+  <div *ngIf="!showSelectionScreen && viewType === discoverPageType.Graph"
+    class="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+  
+    <div class="bg-[#F3F4F6]">
+      <div class="px-6 py-4 flex justify-between">
+        <h1 class="text-lg font-semibold text-gray-800">Embed Data to Graph</h1>
+        <button class="cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg"
+            alt=""></button>
+      </div>
+    </div>
+  
+  
+    <div class="px-6 py-4">
+      <div class="flex space-x-4 text-sm font-medium text-gray-700">
+        <button (click)="toggleGraphTab('add_node')" [ngClass]="{
+            'bg-[#7A499D] text-white': graphActiveTab === 'add_node',
+            'bg-transparent text-gray-700': graphActiveTab !== 'add_node'
+          }" class="p-2 px-4 focus:outline-none rounded transition-colors">
+          Add Node
+        </button>
+        <button (click)="toggleGraphTab('add_link')" [ngClass]="{
+              'bg-[#7A499D] text-white': graphActiveTab === 'add_link',
+              'bg-transparent text-gray-700': graphActiveTab !== 'add_link'
+            }" class="p-2 px-4 focus:outline-none rounded transition-colors">
+          Add Link
+        </button>
+      </div>
+      <div *ngIf="graphActiveTab === 'add_node'">
+        <form [formGroup]="graphNodeForm">
+          <!-- Node Name  -->
+          <h3 class="text-sm font-bold text-gray-700 mt-2 mb-2">
+            Node Text
+          </h3>
+  
+          <div class="mb-1">
+            <input type="text" placeholder="Node text" formControlName="text"
+              class="w-full px-3 py-2 border-2 rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+            <div *ngIf="hasNodeFormError('text')" class="mt-2  text-red-500">Text is required*</div>
+          </div>
+  
+          <h3 class="text-sm font-bold text-gray-700 mb-1">
+            key
+          </h3>
+  
+          <div class="mb-1">
+            <input type="text" placeholder="Key of Node" formControlName="key"
+              class="w-full px-3 py-2 border-2  rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+            <div *ngIf="hasNodeFormError('key')" class="mt-2  text-red-500">Key is required*</div>
+          </div>
+  
+          <h3 class="text-sm font-bold text-gray-700 mb-1">
+            Location
+          </h3>
+  
+          <div class="mb-1">
+            <input type="text" placeholder="e.g. 100 100" formControlName="loc"
+              class="w-full px-3 py-2 border-2 rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+            <div *ngIf="hasNodeFormError('loc')" class="mt-2  text-red-500">location is required*</div>
+  
+          </div>
+        </form>
+      </div>
+  
+  
+      <div *ngIf="graphActiveTab === 'add_link'">
+        <form [formGroup]="NodeLinkForm">
+          <div class="px-6 py-4">
+            <label for="from" class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">From</label>
+            <select id="from" formControlName="from"
+              class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+              <option *ngFor="let node of componentData?.graphElements?.nodes" [value]="node.key">
+                {{ node.text }}
+              </option>
+            </select>
+            <div *ngIf="hasNodeLinkError('from')" class="mt-2  text-red-500">From is required*</div>
+  
+  
+            <label for="to" class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">To</label>
+            <select id="to" formControlName="to"
+              class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+              <option *ngFor="let node of componentData?.graphElements?.nodes" [value]="node.key">
+                {{ node.text }}
+              </option>
+            </select>
+            <div *ngIf="hasNodeLinkError('to')" class="mt-2  text-red-500">To is required*</div>
+  
+  
+            <h3 class="text-sm font-bold text-gray-700 mb-1 mt-1">
+              Add Label
+            </h3>
+  
+            <div class="mb-1">
+              <input type="text" placeholder="Node text" formControlName="label"
+                class="w-full px-3 py-2 border-2 rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+              <div *ngIf="hasNodeLinkError('label')" class="mt-2  text-red-500">Label is required*</div>
+            </div>
+  
+          </div>
+        </form>
+      </div>
+    </div>
+  
+  
+    <div class="flex justify-between p-5">
+      <p class="text-sm font-bold text-[#656F84] mb-4">
+        {{ activeTab === 'create' ? 'Select a concept type to continue' : 'Select a concept data to continue' }}
+      </p>
+  
+      <div class="flex justify-end space-x-3">
+        <button (click)="onCancel()"
+          class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+          Cancel
+        </button>
+        <button (click)="onAddData()" [class.bg-blue-300]="!selectedConceptType" [class.bg-blue-600]="selectedConceptType"
+          [class.hover:bg-blue-700]="selectedConceptType"
+          class="flex px-3 py-1 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 items-center whitespace-nowrap bg-gradient-to-r from-[#9061F9] to-[#F17EB8] cursor-pointer">
+          Add Data <img src="assets/icons/plus.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!--Discover Board Type Section -->
+  <div *ngIf="!showSelectionScreen && viewType === discoverPageType.Board"
+    class="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+  
+    <div class="bg-[#F3F4F6]">
+      <div class="px-6 py-4 flex justify-between">
+        <h1 class="text-lg font-semibold text-gray-800">Add Card Detail</h1>
+        <button class="cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg"
+            alt=""></button>
+      </div>
+  
+    </div>
+    <form [formGroup]="boardCardForm">
+  
+      <div class="px-6 py-4">
+  
+  
+        <label class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">Goal</label>
+  
+        <div class="mb-1">
+          <input type="text" placeholder="Write goal" formControlName="goal"
+            class="w-full px-3 py-2 border-2 rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+          <div *ngIf="hasBoardCardFormError('goal')" class="mt-2  text-red-500">Goal is required*</div>
+        </div>
+  
+        <label class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">Description</label>
+  
+        <div class="mb-1">
+          <input type="text" placeholder="Write description" formControlName="description"
+            class="w-full px-3 py-2 border-2 rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+          <div *ngIf="hasBoardCardFormError('description')" class="mt-2  text-red-500">Description is required*</div>
+        </div>
+  
+        <label for="cardStatus" class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">Card Status</label>
+        <select id="cardStatus" formControlName="cardStatus"
+          class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option *ngFor="let status of cardStatus" [value]="status">
+            {{ status}}
+          </option>
+        </select>
+        <div *ngIf="hasBoardCardFormError('cardStatus')" class="mt-2  text-red-500">Card status is required*</div>
+  
+  
+        <label for="priority" class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">Priority</label>
+        <select id="priority" formControlName="priority"
+          class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option *ngFor="let priority of boardPriority" [value]="priority.priority">
+            {{ priority.priority }}
+          </option>
+        </select>
+        <div *ngIf="hasBoardCardFormError('priority')" class="mt-2  text-red-500">Priority is required*</div>
+  
+  
+        <label for="category" class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">Category</label>
+        <select id="category" formControlName="category"
+          class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+          <option *ngFor="let category of boardCategories" [value]="category.category">
+            {{ category.category }}
+          </option>
+        </select>
+        <div *ngIf="hasBoardCardFormError('category')" class="mt-2  text-red-500">Category is required*</div>
+      </div>
+  
+    </form>
+  
+    <div class="flex justify-between p-5">
+      <p class="text-sm font-bold text-[#656F84] mb-4">
+        {{ activeTab === 'create' ? 'Select a concept type to continue' : 'Select a concept data to continue' }}
+      </p>
+  
+      <div class="flex justify-end space-x-3">
+        <button (click)="onCancel()"
+          class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+          Cancel
+        </button>
+        <button (click)="onAddData()" [class.bg-blue-300]="!selectedConceptType" [class.bg-blue-600]="selectedConceptType"
+          [class.hover:bg-blue-700]="selectedConceptType"
+          class="flex px-3 py-1 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 items-center whitespace-nowrap bg-gradient-to-r from-[#9061F9] to-[#F17EB8] cursor-pointer">
+          Add Data <img src="assets/icons/plus.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!--Discover Excel Table Type Section -->
+  <div *ngIf="!showSelectionScreen && viewType === discoverPageType.Excel"
+    class="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+  
+    <div class="bg-[#F3F4F6]">
+      <div class="px-6 py-4 flex justify-between">
+        <h1 class="text-lg font-semibold text-gray-800">Add record to excel table</h1>
+        <button class="cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg"
+            alt=""></button>
+      </div>
+    </div>
+  
+  
+      <div class="px-6 py-4">
+  
+        <!-- Task Name  -->
+        <h3 class="text-sm font-bold text-gray-700 mb-3">
+          Task Name
+        </h3>
+  
+        <div class="mb-4">
+          <input type="text" placeholder=" Task Name" [(ngModel)]="taskName"
+            class="w-full px-3 py-2 border-2 border-gray-300  rounded-[4px] text-sm focus:outline-none focus:border-[#EF518C] focus:ring-0">
+        </div>
+  
+        <!-- Priority Dropdown -->
+        <div class="relative  w-[100%]">
+          <label class="block mb-2 text-sm font-semibold text-[#656F84]">Priority:</label>
+          <div class="bg-white border border-gray-300 p-2.5 rounded-lg flex items-center justify-between cursor-pointer"
+            (click)="toggleDropdownPriority()">
+            <div class="flex items-center gap-2">
+              <img [src]="selectedPriority.icon" class="w-5 h-5 rounded-full" alt="icon">
+              <span>{{ selectedPriority.name }}</span>
+            </div>
+            <img src="../../../../assets/icons/low.svg" class="w-5 h-5" alt="icon">
+          </div>
+  
+          <div *ngIf="dropdownPriority"
+            class="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow">
+            <div *ngFor="let priority of priorities"
+              class="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
+              (click)="selectPriority(priority)">
+              <div class="flex items-center gap-2">
+                <img [src]="priority.icon" class="w-5 h-5 rounded-full" alt="icon">
+                <span>{{ priority.name }}</span>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+  
+        <!-- Status Name  -->
+        <div class="relative  w-[100%]">
+          <label class="block mb-2 text-sm font-semibold text-[#656F84]">Status:</label>
+          <div class="bg-white border border-gray-300 p-2.5 rounded-lg flex items-center justify-between cursor-pointer"
+            (click)="toggleDropdownStatus()">
+            <div class="flex items-center gap-2 px-2 py-1 rounded text-white"
+              [ngStyle]="{ 'background-color': selectedStatus.color.toLowerCase(), 'color': 'black', 'height':'24px'}">
+              {{ selectedStatus.name }}
+            </div>
+            <img src="../../../../assets/icons/low.svg" class="w-5 h-5" alt="icon">
+          </div>
+  
+          <div *ngIf="dropdownStatus"
+            class="absolute z-10 mt-1 w-full bg-white border  border-gray-300 rounded-lg shadow">
+            <div *ngFor="let status of statuses"
+              class="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer"
+              (click)="selectStatus(status)">
+              <span>{{ status.name }}</span>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Owner Dropdown -->
+        <div class="relative mx-auto mt-3">
+          <label for="countries" class="block mb-2 text-sm font-semibold text-[#656F84]">Owner:</label>
+          <div
+            class="bg-[#FFFFFF] border border-[#E5E7EB] block p-2.5 w-full text-sm rounded-lg focus:outline-none focus:ring-0 focus:border-[#E5E7EB]"
+            (click)="toggleDropdownOwner()">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <img *ngIf="selectedOwners" [src]="selectedOwners.icon" class="w-5 h-5 rounded-full" alt="icon">
+                <span>{{ selectedOwners?.name || 'Owner' }}</span>
+              </div>
+              <img src="../../../../assets/icons/low.svg" class="w-5 h-5" alt="icon">
+            </div>
+          </div>
+          <div *ngIf="dropdownOwner" class="absolute z-10 w-full bg-white border border-gray-300 rounded-lg mt-1 shadow">
+            <div *ngFor="let owner of owners"
+              class="flex items-center justify-between p-2 hover:bg-gray-100 cursor-pointer" (click)="selectOwner(owner)">
+  
+              <div class="flex items-center gap-2">
+                <img [src]="owner.icon" class="w-5 h-5 rounded-full" alt="icon">
+                <span>{{ owner.name }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+        <div class="relative  w-[100%]">
+          <label for="dueDate" class="block mb-2 text-sm font-semibold text-[#656F84]">Due Date:</label>
+          <div class="relative w-full">
+            <input matInput [matDatepicker]="startPicker" [(ngModel)]="dueDate" id="dueDate" placeholder="Select date"
+              class="pe-10 bg-[#FFFFFF] border border-[#E5E7EB] block p-2.5 w-full text-sm rounded-lg focus:outline-none focus:ring-0 focus:border-[#E5E7EB]">
+            <button type="button" (click)="startPicker.open()"
+              class="absolute inset-y-0 right-3 flex items-center cursor-pointer">
+              <img src="../../../../assets/icons/date.svg" class="w-4 h-4" alt="Calendar">
+            </button>
+  
+            <mat-datepicker #startPicker></mat-datepicker>
+          </div>
+        </div>
+  
+  
+      </div>
+  
+    <div class="flex justify-between p-5">
+      <p class="text-sm font-bold text-[#656F84] mb-4">
+        {{ activeTab === 'create' ? 'Select a concept type to continue' : 'Select a concept data to continue' }}
+      </p>
+  
+      <div class="flex justify-end space-x-3">
+        <button (click)="onCancel()"
+          class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+          Cancel
+        </button>
+        <button (click)="onAddData()" [class.bg-blue-300]="!selectedConceptType" [class.bg-blue-600]="selectedConceptType"
+          [class.hover:bg-blue-700]="selectedConceptType"
+          class="flex px-3 py-1 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 items-center whitespace-nowrap bg-gradient-to-r from-[#9061F9] to-[#F17EB8] cursor-pointer">
+          {{ activeTab === 'create' ? 'Create Data' : 'Add Data' }} <img src="assets/icons/plus.svg" alt="" />
+        </button>
+      </div>
+    </div>
+  </div>
+
+<!--Discover  Timeline Type Section -->
+<div *ngIf="!showSelectionScreen && viewType === discoverPageType.Timeline"
+  class="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+
+  <div class="bg-[#F3F4F6]">
+    <div class="px-6 py-4 flex justify-between">
+      <h1 class="text-lg font-semibold text-gray-800">Add record to timeline</h1>
+      <button class="cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg"
+          alt=""></button>
+    </div>
+  </div>
+
+  <!-- Added max-h-[70vh] and overflow-y-auto for vertical scrolling -->
+  <div class="px-6 py-4 max-h-[70vh] overflow-y-auto">
+    <form [formGroup]="timeLineForm" class="p-6 space-y-10">
+
+      <!-- Loop through concept types -->
+      <div *ngFor="let type of ['goals', 'incidents', 'objectives', 'processes', 'projects']">
+        <h2 class="text-xl font-bold text-gray-700 mb-2 capitalize">{{ type }}</h2>
+        <div [formArrayName]="type">
+          <div *ngFor="let item of getFormArray(type).controls; let i = index" [formGroupName]="i"
+            class="border border-gray-300 p-4 mb-3 rounded-md bg-gray-50">
+            <label class="block mb-2 text-sm font-semibold text-[#656F84]">Name:</label>
+            <input formControlName="name" class="w-full mb-2 px-3 py-1 border rounded" placeholder="Name" />
+            <label class="block mb-2 text-sm font-semibold text-[#656F84]">Progress:</label>
+            <input formControlName="progress" type="number" class="w-full mb-2 px-3 py-1 border rounded"
+              placeholder="Progress from 0 - 100" />
+            <label class="block mb-2 text-sm font-semibold text-[#656F84]">Comments:</label>
+            <input formControlName="comments" type="number" class="w-full mb-2 px-3 py-1 border rounded"
+              placeholder="Comments" />
+
+            <div class="flex justify-between items-center mb-2">
+              <label class="inline-flex items-center">
+                <input type="checkbox" formControlName="pinned" class="mr-2" /> Pinned
+              </label>
+              <button type="button" (click)="removeItem(type, i)" class="text-sm text-red-500 cursor-pointer">Remove</button>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" (click)="addItem(type)" class="text-sm text-blue-600">
+          + Add {{ type | slice:0:-1 }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Fixed footer section -->
+  <div class="flex justify-between p-5 border-t border-gray-200 bg-white">
+    <p class="text-sm font-bold text-[#656F84] mb-4">
+      {{ activeTab === 'create' ? 'Select a concept type to continue' : 'Select a concept data to continue' }}
+    </p>
+
+    <div class="flex justify-end space-x-3">
+      <button (click)="onCancel()"
+        class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+        Cancel
+      </button>
+      <button (click)="onAddData()" [class.bg-blue-300]="!selectedConceptType" [class.bg-blue-600]="selectedConceptType"
+        [class.hover:bg-blue-700]="selectedConceptType"
+        class="flex px-3 py-1 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 items-center whitespace-nowrap bg-gradient-to-r from-[#9061F9] to-[#F17EB8] cursor-pointer">
+        {{ activeTab === 'create' ? 'Create Data' : 'Add Data' }} <img src="assets/icons/plus.svg" alt="" />
+      </button>
+    </div>
+  </div>
+</div>
+
+<!--Discover  Organization Type Section -->
+<div *ngIf="!showSelectionScreen && viewType === discoverPageType.Organization"
+  class="w-full mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+
+  <div class="bg-[#F3F4F6]">
+    <div class="px-6 py-4 flex justify-between">
+      <h1 class="text-lg font-semibold text-gray-800">Add card to graph</h1>
+      <button class="cursor-pointer" (click)="closeDialog()"><img src="../../../../assets/icons/cross.svg"
+          alt=""></button>
+    </div>
+  </div>
+
+  <!-- Added max-h-[70vh] and overflow-y-auto for vertical scrolling -->
+  <div class="px-6 py-4 max-h-[70vh] overflow-y-auto">
+
+    <form [formGroup]="organizationForm" class="p-6 space-y-6">
+      <div class="space-y-4">
+        <div class="border border-gray-300 p-4 rounded-md bg-gray-50">
+
+          <!-- Basic Info -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block mb-1 text-sm font-semibold text-[#656F84]">Name:</label>
+              <input formControlName="name" class="w-full px-3 py-2 border rounded" placeholder="Employee Name" />
+                     <div *ngIf="hasOrganizationFormError('name')" class="mt-2  text-red-500">Name is required*</div>
+            </div>
+            <div>
+              <label class="block mb-1 text-sm font-semibold text-[#656F84]">Title:</label>
+              <input formControlName="title" class="w-full px-3 py-2 border rounded" placeholder="Job Title" />
+              <div *ngIf="hasOrganizationFormError('title')" class="mt-2  text-red-500">Title is required*</div>
+            </div>
+            <div>
+              <label class="block mb-1 text-sm font-semibold text-[#656F84]">Department:</label>
+              <select formControlName="dept" class="w-full px-3 py-2 border rounded">
+                <option value="Management">Management</option>
+                <option value="Sales">Sales</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Production">Production</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-1 text-sm font-semibold text-[#656F84]">Supervisor:</label>
+              <select formControlName="parent" class="w-full px-3 py-2 border rounded">
+                <option *ngFor="let employee of organizationData" [value]="employee.key">
+                  {{ employee.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label class="block mb-1 text-sm font-semibold text-[#656F84]">Email:</label>
+              <input formControlName="email" type="email" class="w-full px-3 py-2 border rounded" placeholder="Email" />
+              <div *ngIf="hasOrganizationFormError('email')" class="mt-2  text-red-500">Email is required*</div>
+            </div>
+            <div>
+              <label class="block mb-1 text-sm font-semibold text-[#656F84]">Phone:</label>
+              <input formControlName="phone" class="w-full px-3 py-2 border rounded" placeholder="Phone Number" />
+              <div *ngIf="hasOrganizationFormError('phone')" class="mt-2  text-red-500">Phone is required*</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+
+  <!-- Fixed footer section -->
+  <div class="flex justify-between p-5 border-t border-gray-200 bg-white">
+    <p class="text-sm font-bold text-[#656F84] mb-4">
+      {{ activeTab === 'create' ? 'Select a concept type to continue' : 'Select a concept data to continue' }}
+    </p>
+
+    <div class="flex justify-end space-x-3">
+      <button (click)="onCancel()"
+        class="px-3 py-1 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer">
+        Cancel
+      </button>
+      <button (click)="onAddData()" [class.bg-blue-300]="!selectedConceptType" [class.bg-blue-600]="selectedConceptType"
+        [class.hover:bg-blue-700]="selectedConceptType"
+        class="flex px-3 py-1 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 items-center whitespace-nowrap bg-gradient-to-r from-[#9061F9] to-[#F17EB8] cursor-pointer">
+        {{ activeTab === 'create' ? 'Create Data' : 'Add Data' }} <img src="assets/icons/plus.svg" alt="" />
+      </button>
+    </div>
+  </div>
+</div>
+
+
