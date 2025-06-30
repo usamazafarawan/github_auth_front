@@ -1,10 +1,10 @@
 export class environment {
-    static BaseApi='http://localhost:3000/api';
+    static BaseApi='http://localhost:3000/api/v1';
 }
 
 
 export class ApiUrl {
-    static adminLogInApi = `${environment.BaseApi}/signUp/login`;
+    static adminLogInApi = `${environment.BaseApi}/auth/login`;
 
 
 }
