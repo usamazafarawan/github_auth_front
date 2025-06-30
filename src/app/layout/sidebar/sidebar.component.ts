@@ -1,6 +1,6 @@
 
        import { MediaMatcher } from "@angular/cdk/layout";
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatListModule } from "@angular/material/list";
@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
+import { AddDataDialogComponent } from "../../shared/ui/add-data-dialog/add-data-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 
 
 /** @title Responsive sidenav */
@@ -46,14 +48,17 @@ export class SidebarComponent implements OnInit, OnDestroy {
                 {
                      "Title": "Remove Integration",
             "Icon": "user-xmark",
+            "index":1
                 },
                 {
                     "Title": "Re-sync Integration",
             "Icon": "rotate",
+            "index":2
                 } ,
                    {
                     "Title": "Log Out",
             "Icon": "right-from-bracket",
+            "index":3
                 } 
             ]
         }];
@@ -62,6 +67,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   endNavs: any;
   today = new Date();
   showDateFields: boolean = true;
+  dialog1 = inject(MatDialog);
+
 
   toggleDateFields() {
     this.showDateFields = !this.showDateFields;
@@ -75,22 +82,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.mobileQuery = media.matchMedia("(max-width: 768px)");
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    let url= this.router.url
-    url = url.split('/')[1]
-    console.log(url);
-    this.selectedTab = url  
   }
 
-  selectTab(tab: string) {
-    this.selectedTab = tab;
-    this.router.navigate([tab]);
+ 
+  navigateToChild(child:any) {
+  if (child.index == 3) {
+    this.router.navigate(['']);
   }
-  navigateToChild(route: string, parentRoute: string, childRoute: string, childTitle: string) {
-  if (route) {
-    this.router.navigate([route]);
-  };
-  this.selectedPhases[parentRoute] = childTitle;
-
+   this.openDialog(child.index == 1 ? "Remove Integration":child.index == 2? "Re-sync Integration":'' )
 }
 
 
@@ -119,22 +118,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       (item: any) => item.isNested === "true"
     );
   
-
       this.activeMenu = '';
-    
- 
-       // Check if the current selected tab is 'phase' or 'strategy'
-  let url = this.router.url;
-  url = url.split('/')[1];  // Get the first part of the URL path
-  console.log(url);
-  this.selectedTab = url;
-
-  // Ensure that the 'phase' (or strategy) menu is closed by default
-  if (this.selectedTab === '') {
-    this.activeMenu = null;  // Close the phase menu by default
-  }
-  
-    
   }
 
   onSidebarToggle() {
@@ -156,6 +140,26 @@ export class SidebarComponent implements OnInit, OnDestroy {
 selectedPhases: { [parentRoute: string]: string } = {};
 
 
+
+openDialog(type:string) {
+  if(type){
+  const dialogRef = this.dialog1.open(AddDataDialogComponent, {
+    height: 'auto',
+    width: '25%',
+    panelClass: 'custom-dialog-panel',
+    data: {
+      type: type
+    },
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result) {
+      console.log('result: ', result); //  further operation
+   
+    }
+  });
+  }
+
+}
 
  
 }

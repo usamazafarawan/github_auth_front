@@ -81,9 +81,9 @@
   block: menuStates[item?.Route]
 }"
               >
-                <li *ngFor="let child of item?.child">
+                <li *ngFor="let child of item?.child; i of index">
                   <a
-                    (click)="navigateToChild(child.Route, item.Route, child.Route, child.Title)"
+                    (click)="navigateToChild(child)"
                     class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100"
                   >
 <i [ngClass]="'fas fa-' + child.Icon"></i> <!-- renders as fas fa-user -->
