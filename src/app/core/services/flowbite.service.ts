@@ -1,17 +1,31 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
+import { MainRequestServiceService } from './main-request-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FlowbiteService {
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+export class SharedService {
+  constructor(private router: Router,private mainRequestServiceService:MainRequestServiceService
+  ) { }
 
-  loadFlowbite(callback: (flowbite: any) => void) {
-    if (isPlatformBrowser(this.platformId)) {
-      import('flowbite').then(flowbite => {
-        callback(flowbite);
-      });
+
+  logout() {
+
+
+this.mainRequestServiceService.signoutGithub().subscribe({
+  next: (data) => {
+    if (data) {
+      this.router.navigate(['']);
     }
+  },
+  error: (err) => {
+    console.error('Signout failed:', err);
+    // Optionally show a user-friendly message
   }
+})
+
+  }
+
 }

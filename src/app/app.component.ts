@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
-import { FlowbiteService } from './core/services/flowbite.service';
-import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +11,11 @@ import { initFlowbite } from 'flowbite';
 export class AppComponent {
   title = 'graphlogicng';
   selectedTab: string = 'dashboard';
-  constructor(private flowbiteService: FlowbiteService,
+  constructor(
   ) {}
 
 
   ngOnInit(): void {
-    // this.flowbiteService.loadFlowbite((flowbite) => {
-      initFlowbite();
-    // });
+
   }
 }

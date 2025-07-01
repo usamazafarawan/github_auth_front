@@ -1,12 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { ApiUrl } from "../../shared/resources/apiResource";
 
 @Injectable({
   providedIn: "root",
 })
 export class MainRequestServiceService {
- baseUrl = 'http://localhost:3000/api/github';
+ baseUrl = 'http://localhost:3000/api/v1/auth';
  constructor(private http: HttpClient) {}
 
   /**
@@ -71,5 +72,9 @@ export class MainRequestServiceService {
     return this.http.get<any[]>(`${this.baseUrl}/data/issues`, {
       params: { owner, repo },
     });
+  }
+
+    signoutGithub() {
+    return this.http.delete<any[]>(`${ApiUrl.githubLogOutApi}`);
   }
 }

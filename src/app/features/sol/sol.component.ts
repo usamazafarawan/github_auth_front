@@ -7,6 +7,7 @@ import { AgGridModule } from "ag-grid-angular";
 import { AllCommunityModule, ModuleRegistry } from "ag-grid-community";
 import { MainRequestServiceService } from "../../core/services/main-request-service.service";
 import { HttpClientModule } from "@angular/common/http";
+import { SharedService } from "../../core/services/flowbite.service";
 
 // Register AG Grid community modules globally
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -19,6 +20,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   styleUrls: ["./sol.component.scss"],
 })
 export class SolComponent {
+  public activeView: 'repos' | 'comments' = 'repos';
   data: any[] = []
   breadCrumb: string[] = [];
   selectedTab: string = "";
@@ -27,45 +29,23 @@ export class SolComponent {
   rowData: any[] = [];
   columnDefs: any[] = [];
 
-  // ⚙️ Default AG Grid column configuration
+  // Default AG Grid column configuration
   defaultColDef = {
     sortable: true,
     filter: true,
     resizable: true,
   };
 
-  // 🧠 Holds reference to AG Grid API
+  // Holds reference to AG Grid API
   gridApi: any;
+
 
   constructor(
     private router: Router,
     private toastr: ToastrService,
     private mainService: MainRequestServiceService
   ) {
-    // Fetch all repositories (optional: for dropdowns or debugging)
-    this.mainService.getRepos().subscribe((repos) => {
-      console.log("repos: ", repos);
-    });
-
-    // Load commits for a specific repo statically (kamal-no-bot / Cordato-Web)
-    this.mainService
-      .getCommits("alamin-hridoy", "graphlogicng")
-      .subscribe((commits) => {
-        // nested GitHub commit objects to a table-friendly format
-        const flattenedCommits = commits.map((commit) => ({
-          sha: commit.sha,
-          author_name: commit.commit.author?.name,
-          author_email: commit.commit.author?.email,
-          date: commit.commit.author?.date,
-          message: commit.commit.message,
-          url: commit.html_url,
-        }));
-
-        setTimeout(() => {
-          this.rowData = flattenedCommits;
-          this.columnDefs = this.generateDynamicColumns(flattenedCommits);
-        }, 0);
-      });
+    this.loadRepos()
   }
 
   ngOnInit(): void {
@@ -102,16 +82,13 @@ export class SolComponent {
         return Array.isArray(val)
           ? val.join(", ")
           : typeof val === "object"
-          ? JSON.stringify(val)
-          : val ?? "";
+            ? JSON.stringify(val)
+            : val ?? "";
       },
     }));
   }
 
-  // Triggers GitHub OAuth login via backend
-  connectToGitHub() {
-    window.location.href = "http://localhost:3000/api/github/login";
-  }
+
 
   goToDashboard() {
     this.router.navigate(["/dashboard"]);
@@ -119,5 +96,62 @@ export class SolComponent {
 
   goToDetail() {
     this.router.navigate(["/detail"]);
+  }
+
+
+  loadRepos() {
+    this.activeView = 'repos';
+    this.resetData()
+
+    this.mainService.getRepos().subscribe((repos) => {
+      const flattenedCommits = repos.map((repo) => ({
+        name: repo.name,
+        repo_owner: repo.owner?.login,
+        visibility: repo.visibility,
+        date: repo.created_at,
+        repo_language: repo.language,
+        mesdefault_branchsage: repo.default_branch,
+        url: repo.html_url,
+        allowFork: repo.allow_forking,
+        ssh_url: repo.ssh_url
+      }));
+
+      setTimeout(() => {
+        this.rowData = flattenedCommits;
+        this.columnDefs = this.generateDynamicColumns(flattenedCommits);
+      }, 0);
+    });
+  }
+
+  loadComments() {
+    this.activeView = 'comments';
+    this.resetData()
+    this.mainService
+      .getCommits("alamin-hridoy", "graphlogicng")
+      .subscribe((commits) => {
+        console.log('commits: ', commits);
+        //   nested GitHub commit objects to a table-friendly format
+        const flattenedCommits = commits.map((commit) => ({
+          sha: commit.sha,
+          author_name: commit.commit.author?.name,
+          author_email: commit.commit.author?.email,
+          date: commit.commit.author?.date,
+          message: commit.commit.message,
+          url: commit.html_url,
+          user_view_type: commit.author.user_view_type,
+          verified: commit.commit.verification.verified
+        }));
+
+        setTimeout(() => {
+          this.rowData = flattenedCommits;
+          this.columnDefs = this.generateDynamicColumns(flattenedCommits);
+        }, 0);
+      });
+  }
+
+
+  resetData() {
+    this.rowData = [];
+    this.columnDefs = []
   }
 }

@@ -7,4 +7,6 @@ export class ApiUrl {
     static adminLogInApi = `${environment.BaseApi}/auth/login`;
 
 
+     static githubLogOutApi = `${environment.BaseApi}/auth/logout`;
+
 }

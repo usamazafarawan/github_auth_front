@@ -14,6 +14,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { AddDataDialogComponent } from "../../shared/ui/add-data-dialog/add-data-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import { SharedService } from "../../core/services/flowbite.service";
 
 
 /** @title Responsive sidenav */
@@ -77,7 +78,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(
     changeDetectorRef: ChangeDetectorRef, 
     media: MediaMatcher,
-    private router: Router
+    private router: Router,
+    private sharedService:SharedService,
   ) {
     this.mobileQuery = media.matchMedia("(max-width: 768px)");
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -87,7 +89,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
  
   navigateToChild(child:any) {
   if (child.index == 3) {
-    this.router.navigate(['']);
+    this.sharedService.logout();
   }
    this.openDialog(child.index == 1 ? "Remove Integration":child.index == 2? "Re-sync Integration":'' )
 }

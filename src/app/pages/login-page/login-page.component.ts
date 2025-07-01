@@ -50,4 +50,10 @@ export class LoginPageComponent {
     );
   }
 
+
+  connectToGitHub(){
+     window.location.href = "http://localhost:3000/api/v1/auth/login";
+
+  }
+
 }

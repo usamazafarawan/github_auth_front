@@ -4,7 +4,7 @@ import { LoginPageComponent } from "../app/pages/login-page/login-page.component
 export const routes: Routes = [
 
   {
-    path: "",
+    path: "login",
     component: LoginPageComponent,
   },
 
@@ -20,5 +20,5 @@ export const routes: Routes = [
     ],
   },
  
-  { path: "**", redirectTo: "" },
+  { path: "**", redirectTo: "login" },
 ];
