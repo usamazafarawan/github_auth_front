@@ -20,7 +20,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
   styleUrls: ["./sol.component.scss"],
 })
 export class SolComponent {
-  public activeView: 'repos' | 'comments' = 'repos';
+  public activeView: 'repos' | 'comments' | 'issues' = 'repos';
   data: any[] = []
   breadCrumb: string[] = [];
   selectedTab: string = "";
@@ -148,6 +148,7 @@ export class SolComponent {
         }, 0);
       });
   }
+
 
 
   resetData() {

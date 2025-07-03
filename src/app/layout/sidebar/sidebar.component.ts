@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { AddDataDialogComponent } from "../../shared/ui/add-data-dialog/add-data-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import { SharedService } from "../../core/services/flowbite.service";
+import { ToastrService } from "ngx-toastr";
 
 
 /** @title Responsive sidenav */
@@ -80,6 +81,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
     media: MediaMatcher,
     private router: Router,
     private sharedService:SharedService,
+        private toastr: ToastrService,
+
   ) {
     this.mobileQuery = media.matchMedia("(max-width: 768px)");
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
@@ -89,7 +92,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
  
   navigateToChild(child:any) {
   if (child.index == 3) {
-    this.sharedService.logout();
+      this.router.navigate(['']);
   }
    this.openDialog(child.index == 1 ? "Remove Integration":child.index == 2? "Re-sync Integration":'' )
 }
@@ -153,12 +156,16 @@ openDialog(type:string) {
       type: type
     },
   });
-  dialogRef.afterClosed().subscribe((result) => {
-    if (result) {
-      console.log('result: ', result); //  further operation
-   
-    }
-  });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (type == 'Remove Integration') {
+          this.sharedService.revoke();
+        }
+        else {
+          this.toastr.success("Successfully", 'Account Re-sync')
+        }
+      }
+    });
   }
 
 }

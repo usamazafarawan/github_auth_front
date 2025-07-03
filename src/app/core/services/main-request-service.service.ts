@@ -74,6 +74,18 @@ export class MainRequestServiceService {
     });
   }
 
+   getPulls(owner: string, repo: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/data/pulls`, {
+      params: { owner, repo },
+    });
+  }
+
+  getOrganizationMembers(org: string) {
+    return this.http.get<any[]>(`${this.baseUrl}/data/users`, {
+      params: { org },
+    });
+  }
+
     signoutGithub() {
     return this.http.delete<any[]>(`${ApiUrl.githubLogOutApi}`);
   }
